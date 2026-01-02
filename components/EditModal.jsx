@@ -27,6 +27,12 @@ export default function EditModal({
 
           {mode === 'interval' ? (
             <View style={styles.intervalRow}>
+              <Picker selectedValue={unit} onValueChange={onChangeUnit} style={styles.picker}>
+                <Picker.Item label="دقیقه" value="minute" />
+                <Picker.Item label="ساعت" value="hour" />
+                <Picker.Item label="روز" value="day" />
+              </Picker>
+
               <TextInput
                 style={[styles.input, { flex: 1 }]}
                 keyboardType="numeric"
@@ -34,16 +40,6 @@ export default function EditModal({
                 onChangeText={onChangeValue}
                 placeholder="عدد"
               />
-
-              <Picker
-                selectedValue={unit}
-                onValueChange={onChangeUnit}
-                style={styles.picker}
-              >
-                <Picker.Item label="دقیقه" value="minute" />
-                <Picker.Item label="ساعت" value="hour" />
-                <Picker.Item label="روز" value="day" />
-              </Picker>
             </View>
           ) : (
             <TextInput
@@ -51,16 +47,17 @@ export default function EditModal({
               keyboardType={mode === 'name' ? 'default' : 'numeric'}
               value={value}
               onChangeText={onChangeValue}
+              placeholder={mode === 'name' ? 'نام' : 'عدد'}
             />
           )}
 
           <View style={styles.buttons}>
-            <TouchableOpacity style={styles.confirm} onPress={onConfirm}>
-              <Text style={styles.btnText}>Confirm</Text>
+            <TouchableOpacity style={styles.cancel} onPress={onCancel}>
+              <Text style={styles.btnText}>بازگشت</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.cancel} onPress={onCancel}>
-              <Text style={styles.btnText}>Cancel</Text>
+            <TouchableOpacity style={styles.confirm} onPress={onConfirm}>
+              <Text style={styles.btnText}>تایید</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -104,11 +101,12 @@ const styles = StyleSheet.create({
   },
   picker: {
     flex: 1,
+    maxWidth: 105,
     marginBottom: 20,
   },
   buttons: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
   },
   confirm: {
     flex: 1,
