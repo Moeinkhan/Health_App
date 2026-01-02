@@ -1,12 +1,49 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import API_BASE_URL from '../api';
 
 export default function HistoryScreen() {
-  const data = [
-    { name: "دارو 1", date: '1404/08/01', time: '10:30', remaining: 5 },
-    { name: "دارو 2", date: '1404/08/02', time: '12:00', remaining: 4 },
-    { name: "دارو 3", date: '1404/08/03', time: '14:15', remaining: 3 },
-    { name: "دارو 4", date: '1404/08/04', time: '09:45', remaining: 2 },
-  ];
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchHistory();
+  }, []);
+
+  const fetchHistory = async () => {
+    setLoading(true);
+    try
+    {
+      const response = await fetch(`${API_BASE_URL}/history`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('خطا در دریافت تاریخچه');
+      }
+
+      const result = await response.json();
+      setData(result);
+    }
+    catch (error) {
+      console.log(error);
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4a90e2" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -19,12 +56,12 @@ export default function HistoryScreen() {
         <Text style={styles.headerCell}>باقی‌مانده</Text>
       </View>
 
-      {data.map((item) => (
-        <View key={item.name} style={styles.row}>
+      {data.map((item, index) => (
+        <View key={index} style={styles.row}>
           <Text style={styles.cell}>{item.name}</Text>
           <Text style={styles.cell}>{item.time}</Text>
           <Text style={styles.cell}>{item.date}</Text>
-          <Text style={styles.cell}>{item.remaining}</Text>
+          <Text style={styles.cell}>{item.count}</Text>
         </View>
       ))}
     </View>
@@ -67,5 +104,10 @@ const styles = StyleSheet.create({
   cell: {
     flex: 1,
     textAlign: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
