@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import API_BASE_URL from '../api';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -35,7 +36,15 @@ const DashboardLayout = () => {
 
     const token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log('Expo Push Token:', token);
-    // ⚡️ این توکن رو بعداً به backend می‌فرستی
+
+    // Send Push Token to backend
+    fetch(`${API_BASE_URL}/register-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({token}),
+    });
   }
 
   useEffect(() => {
