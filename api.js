@@ -1,3 +1,3 @@
-const API_BASE_URL = 'https://my-json-server.typicode.com/Moeinkhan/FakeAPI';
+const API_BASE_URL = 'https://embedded.liara.run';
 
 export default API_BASE_URL;

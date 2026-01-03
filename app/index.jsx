@@ -40,7 +40,7 @@ export default function HomeScreen() {
     setLoading(true);
     try
     {
-      const response = await fetch(`${API_BASE_URL}/pills`,
+      const response = await fetch(`${API_BASE_URL}/api/dashboard/`,
       {
         method: 'GET',
         headers: {
@@ -89,7 +89,7 @@ export default function HomeScreen() {
 
     // Send to backend
     try {
-      const response = await fetch(`${API_BASE_URL}/pills/${selectedPill}`,
+      const response = await fetch(`${API_BASE_URL}/api/dashboard/`,
         {
           method: 'PUT',
           headers: {

@@ -14,7 +14,7 @@ export default function HistoryScreen() {
     setLoading(true);
     try
     {
-      const response = await fetch(`${API_BASE_URL}/history`,
+      const response = await fetch(`${API_BASE_URL}/api/history/`,
       {
         method: 'GET',
         headers: {
