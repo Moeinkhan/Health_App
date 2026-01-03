@@ -1,7 +1,67 @@
 import { Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
+import { useEffect } from 'react';
+import { Platform } from 'react-native';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 const DashboardLayout = () => {
+  async function registerForPushNotificationsAsync() {
+    if (!Device.isDevice) {
+      console.log('Push notifications only work on a real device.');
+      return;
+    }
+
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      console.log('Permission not granted for push notifications!');
+      return;
+    }
+
+    const token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log('Expo Push Token:', token);
+    // ⚡️ این توکن رو بعداً به backend می‌فرستی
+  }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+      });
+    }
+
+    const sub1 = Notifications.addNotificationReceivedListener(notification => {
+      console.log('Notification Received:', notification);
+    });
+
+    const sub2 = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log('Notification Clicked:', response);
+    });
+
+    return () => {
+      sub1.remove();
+      sub2.remove();
+    };
+  }, []);
+
   return (
     <Tabs screenOptions={{headerShown: false, tabBarStyle: {height: 60}}}>
       <Tabs.Screen

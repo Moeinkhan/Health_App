@@ -23,7 +23,8 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.moein.khm.HealthApp",
-      "googleServicesFile": "./android/app/google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
