@@ -21,13 +21,22 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.moein.khm.HealthApp",
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
-    ]
+      "expo-router",
+      "expo-notifications"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "44be2395-1b5a-46e0-916c-10b6ee9a3b9d"
+      }
+    }
   }
 }
