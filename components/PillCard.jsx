@@ -5,6 +5,7 @@ export default function PillCard({
   name,
   count,
   interval,
+  is_active,
   onChangeName,
   onChangeCount,
   onChangeInterval,
@@ -34,6 +35,16 @@ export default function PillCard({
       <View style={styles.row}>
         <Text style={styles.value}>هر {interval.value} {unitLabel}</Text>
         <Text style={styles.label}>زمان مصرف</Text>
+      </View>
+
+      <View style={styles.row}>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <Text style={[styles.value, { color: is_active ? '#2ecc71' : '#e74c3c' }]}>
+            {is_active ? 'فعال' : 'غیرفعال'}
+          </Text>
+          <View style={[styles.statusDot, { backgroundColor: is_active ? '#2ecc71' : '#e74c3c' }]} />
+        </View>
+        <Text style={styles.label}>وضعیت</Text>
       </View>
 
       <View style={styles.actions}>
@@ -95,5 +106,12 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: 'bold',
     color: '#fff',
+  },
+  statusDot: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    marginHorizontal: 5,
+    marginTop: 4,
   },
 });
