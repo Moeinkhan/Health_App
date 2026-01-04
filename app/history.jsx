@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import API_BASE_URL from '../api';
 
 export default function HistoryScreen() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchHistory();
@@ -37,6 +38,14 @@ export default function HistoryScreen() {
     }
   };
 
+  const onRefresh = async () => {
+    if (refreshing) return;
+
+    setRefreshing(true);
+    await fetchHistory();
+    setRefreshing(false);
+  };
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -56,7 +65,8 @@ export default function HistoryScreen() {
         <Text style={styles.headerCell}>باقی‌مانده</Text>
       </View>
 
-      <ScrollView>
+      <ScrollView refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/> }>
         {data.map((item, index) => (
           <View key={index} style={styles.row}>
             <Text style={styles.cell}>{item.name}</Text>

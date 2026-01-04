@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, Alert, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import PillCard from '../components/PillCard';
 import EditModal from '../components/EditModal';
 import API_BASE_URL from '../api';
@@ -7,6 +7,7 @@ import API_BASE_URL from '../api';
 export default function HomeScreen() {
   const [pills, setPills] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPill, setSelectedPill] = useState(null);
   const [modalMode, setModalMode] = useState('');
@@ -109,6 +110,15 @@ export default function HomeScreen() {
     }
   };
 
+  // ---------------- REFRESH ----------------
+  const onRefresh = async () => {
+    if (refreshing) return;
+
+    setRefreshing(true);
+    await fetchPills();
+    setRefreshing(false);
+  };
+
   // ---------------- LOADING ----------------
   if (loading) {
     return (
@@ -122,16 +132,19 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Health App</Text>
 
-      {pills.map((pill, index) => (
-        <PillCard
-          key={index}
-          title={`محفظه دارو ${index + 1}`}
-          {...pill}
-          onChangeName={() => openModal(index, 'name')}
-          onChangeCount={() => openModal(index, 'count')}
-          onChangeInterval={() => openModal(index, 'interval')}
-        />
-      ))}
+      <ScrollView refreshControl={ 
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/> }>
+        {pills.map((pill, index) => (
+          <PillCard
+            key={index}
+            title={`محفظه دارو ${index + 1}`}
+            {...pill}
+            onChangeName={() => openModal(index, 'name')}
+            onChangeCount={() => openModal(index, 'count')}
+            onChangeInterval={() => openModal(index, 'interval')}
+          />
+        ))}
+      </ScrollView>
 
       <EditModal
         visible={modalVisible}
