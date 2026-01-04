@@ -34,16 +34,16 @@ const DashboardLayout = () => {
       return;
     }
 
-    const token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log('Expo Push Token:', token);
+    const push_token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log('Expo Push Token:', push_token);
 
     // Send Push Token to backend
-    fetch(`${API_BASE_URL}/register-token`, {
-      method: 'POST',
+    fetch(`${API_BASE_URL}/register-token/`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({token}),
+      body: JSON.stringify({token: push_token})
     });
   }
 

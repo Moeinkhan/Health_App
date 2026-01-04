@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import API_BASE_URL from '../api';
 
 export default function HistoryScreen() {
@@ -56,14 +56,16 @@ export default function HistoryScreen() {
         <Text style={styles.headerCell}>باقی‌مانده</Text>
       </View>
 
-      {data.map((item, index) => (
-        <View key={index} style={styles.row}>
-          <Text style={styles.cell}>{item.name}</Text>
-          <Text style={styles.cell}>{item.time}</Text>
-          <Text style={styles.cell}>{item.date}</Text>
-          <Text style={styles.cell}>{item.count}</Text>
-        </View>
-      ))}
+      <ScrollView>
+        {data.map((item, index) => (
+          <View key={index} style={styles.row}>
+            <Text style={styles.cell}>{item.name}</Text>
+            <Text style={styles.cell}>{item.time}</Text>
+            <Text style={styles.cell}>{item.date}</Text>
+            <Text style={styles.cell}>{item.count}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
