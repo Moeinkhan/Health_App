@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView, RefreshControl, Alert } from 'react-native';
 import API_BASE_URL from '../api';
 
 export default function HistoryScreen() {
@@ -32,6 +32,7 @@ export default function HistoryScreen() {
     }
     catch (error) {
       console.log(error);
+      Alert.alert('خطا', 'دریافت اطلاعات تاریخچه از سرور انجام نشد');
     }
     finally {
       setLoading(false);
