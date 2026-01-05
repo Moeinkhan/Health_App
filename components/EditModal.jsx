@@ -27,7 +27,7 @@ export default function EditModal({
 
           {mode === 'interval' ? (
             <View style={styles.intervalRow}>
-              <Picker selectedValue={unit} onValueChange={onChangeUnit} style={styles.picker}>
+              <Picker selectedValue={unit} onValueChange={onChangeUnit} style={styles.picker} dropdownIconColor='#000'>
                 <Picker.Item label="دقیقه" value="minute" />
                 <Picker.Item label="ساعت" value="hour" />
                 <Picker.Item label="روز" value="day" />
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     maxWidth: 105,
     marginBottom: 20,
+    color: '#000',
   },
   buttons: {
     flexDirection: 'row',
